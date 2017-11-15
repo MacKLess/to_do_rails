@@ -26,6 +26,27 @@ describe "the add a list process" do
       visit list_path(list)
       expect(page).to have_content 'Homework stuff'
     end
+
+    it "gives error when no name is entered" do
+      list = List.create(:name => 'Home stuff')
+      visit lists_path
+      click_link 'Home stuff'
+      click_link 'Edit List'
+      fill_in 'Name', :with => ''
+      click_on 'Update List'
+      expect(page).to have_content 'errors'
+    end
+  end
+
+  describe "the delete a list process" do
+    it "deletes a list" do
+      list = List.create(:name => 'Home stuff')
+      visit lists_path
+      click_link 'Home stuff'
+      click_link 'Delete List'
+      visit lists_path
+      expect(page).to have_no_content 'Home stuff'
+    end
   end
 
 end
